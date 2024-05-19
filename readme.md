@@ -506,3 +506,7 @@ $product = new Product($row['id'], $row['name'], $row['price'], $row['descriptio
 ### Conclusion
 
 Congratulations! You've created a simple PHP application that interacts with a PostgreSQL database. This application allows you to view users, their orders, and the products in those orders.
+
+For those who already have experience with databases and web development, you will rightly notice that this application does not follow best practices. The demonstration was written such that it could be understood as easily as possible.
+
+I encourage you to play around with your code. Change things, break things, and extend it with new functionality. The best way to learn is by doing.

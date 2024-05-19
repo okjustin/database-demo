@@ -1,10 +1,12 @@
 <?php
 
+// Require the necessary files
 require_once 'Models/User.php';
 require_once 'Models/Order.php';
 require_once 'Models/OrderProduct.php';
 require_once 'Database/Connection.php';
 
+// Get the order ID from the URL
 $orderId = $_GET['id'];
 
 // Fetch the order details
@@ -29,7 +31,6 @@ while ($row = pg_fetch_assoc($result)) {
     $orderProduct->productPrice = $row['product_price'];
     $orderProducts[] = $orderProduct;
 }
-
 
 ?>
 

@@ -1,10 +1,13 @@
 <?php
 
+// Require the necessary files
 require_once 'Models/Product.php';
 require_once 'Database/Connection.php';
 
+// Get the product ID from the URL
 $id = $_GET['id'];
 
+// Fetch the product details
 $query = "SELECT * FROM products WHERE id = $id";
 $result = pg_query($connection, $query);
 $row = pg_fetch_assoc($result);

@@ -1,25 +1,23 @@
 <?php
 
+// Require the necessary files
 require_once 'Models/User.php';
 require_once 'Models/Order.php';
 require_once 'Database/Connection.php';
 
+// Get the user ID from the URL
 $userId = $_GET['id'];
 
+// Fetch the user details
 $query = "SELECT * FROM users WHERE id = $userId LIMIT 1";
-
 $result = pg_query($connection, $query);
-
 $row = pg_fetch_assoc($result);
-
 $user = new User($row['id'], $row['first_name'], $row['last_name'], $row['email'], $row['password']);
 
+// Fetch the orders for the user
 $query = "SELECT * FROM orders WHERE user_id = $userId";
-
 $result = pg_query($connection, $query);
-
 $orders = [];
-
 while ($row = pg_fetch_assoc($result)) {
     $order = new Order($row['id'], $row['user_id'], $row['date'], $row['total']);
     $orders[] = $order;

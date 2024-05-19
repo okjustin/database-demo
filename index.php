@@ -1,14 +1,13 @@
 <?php
 
+// Require the necessary files
 require_once 'Models/User.php';
 require_once 'Database/Connection.php';
 
+// Fetch all users
 $query = 'SELECT * FROM users';
-
 $result = pg_query($connection, $query);
-
 $users = [];
-
 while ($row = pg_fetch_assoc($result)) {
     $user = new User($row['id'], $row['first_name'], $row['last_name'], $row['email'], $row['password']);
     $users[] = $user;

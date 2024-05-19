@@ -1,6 +1,7 @@
 <?php
 
 require_once 'Models/User.php';
+require_once 'Models/Order.php';
 require_once 'Database/Connection.php';
 
 $userId = $_GET['id'];

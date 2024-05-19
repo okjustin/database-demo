@@ -3,13 +3,13 @@
 class Order {
     public $id;
     public $userId;
-    public $totalPrice;
     public $date;
+    public $total;
 
-    public function __construct($userId, $totalPrice, $date) {
+    public function __construct($userId, $date, $total) {
         $this->userId = $userId;
-        $this->totalPrice = $totalPrice;
         $this->date = $date;
+        $this->total = $total;
     }
 }
 

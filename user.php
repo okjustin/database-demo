@@ -37,7 +37,7 @@ while ($row = pg_fetch_assoc($result)) {
 <body>
     <h1>User details</h1>
 
-    <p><a href="index.php">Back</a></p>#
+    <p><a href="index.php">Back</a></p>
 
     <p><strong>First Name:</strong> <?php echo $user->firstName; ?></p>
 

@@ -15,7 +15,7 @@ $order = new Order($row['id'], $row['user_id'], $row['date'], $row['total']);
 
 // Fetch the order products along with the product details
 $query = "
-    SELECT order_producsts.id, order_products.product_id, order_products.quantity, products.name AS product_name, products.price AS product_price
+    SELECT order_products.id, order_products.order_id, order_products.product_id, order_products.quantity, products.name AS product_name, products.price AS product_price
     FROM order_products
     JOIN products ON order_products.product_id = products.id
     WHERE order_products.order_id = $orderId";

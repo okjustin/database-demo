@@ -8,7 +8,7 @@ $id = $_GET['id'];
 $query = "SELECT * FROM products WHERE id = $id";
 $result = pg_query($connection, $query);
 $row = pg_fetch_assoc($result);
-$product = new Product($row['name'], $row['price'], $row['description']);
+$product = new Product($row['id'], $row['name'], $row['price'], $row['description']);
 
 ?>
 

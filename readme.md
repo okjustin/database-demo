@@ -9,7 +9,7 @@ Welcome to the guide on how to view relational data with PHP. This guide will he
 1. **Open PgAdmin4:** Launch the PgAdmin4 application.
 
 2. **Create a Database:**
-  - Connect to a database server (either on your local machine or with the provided credentials) and expand it with the dropdown arrow icon
+  - Connect to a database server (either on your local machine or with the provided credentials) and expand it with the drop-down arrow icon
   - Right-click on "Databases" and select "Create" > "Database...".
   - Enter a name for your database (e.g., `demo`) and click "Save".
 
@@ -242,10 +242,23 @@ Create a new file named `index.php` and add the following code:
 require_once 'Models/User.php';
 require_once 'Database/Connection.php';
 
-// Fetch all users
-$query = 'SELECT * FROM users';
-$result = pg_query($connection, $query);
+// Initialize users array
 $users = [];
+
+// Check if the search form has been submitted
+if (isset($_GET['email'])) {
+    $email = $_GET['email'];
+    // Sanitize input to prevent SQL injection
+    $email = pg_escape_string($connection, $email);
+    // Fetch users by email
+    $query = "SELECT * FROM users WHERE email ILIKE '%$email%'";
+} else {
+    // Fetch all users
+    $query = 'SELECT * FROM users';
+}
+
+$result = pg_query($connection, $query);
+
 while ($row = pg_fetch_assoc($result)) {
     $user = new User($row['id'], $row['first_name'], $row['last_name'], $row['email'], $row['password']);
     $users[] = $user;
@@ -258,37 +271,51 @@ while ($row = pg_fetch_assoc($result)) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="styles.css">
     <title>Users</title>
 </head>
 <body>
     <h1>Users</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Email</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($users as $user): ?>
+
+    <form method="get" action="index.php">
+        <label for="email">Search by Email:</label>
+        <input type="text" id="email" name="email">
+        <button type="submit">Search</button>
+    </form>
+
+    <br><br>
+
+    <?php if (count($users) == 0): ?>
+        <p>No users found</p>
+    <?php else: ?>
+        <table>
+            <thead>
                 <tr>
-                    <td><?php echo $user->firstName; ?></td>
-                    <td><?php echo $user->lastName; ?></td>
-                    <td><?php echo $user->email; ?></td>
-                    <td>
-                        <a href="user.php?id=<?php echo $user->id; ?>">View</a>
-                    </td>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Actions</th>
                 </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <?php foreach ($users as $user): ?>
+                    <tr>
+                        <td><?php echo $user->firstName; ?></td>
+                        <td><?php echo $user->lastName; ?></td>
+                        <td><?php echo $user->email; ?></td>
+                        <td>
+                            <a href="user.php?id=<?php echo $user->id; ?>">View</a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    <?php endif; ?>
 </body>
 </html>
 ```
 
-- **Explanation:** This page fetches all users from the database and displays them in a table. Each row in the table has a "View" link that takes the user to a detailed view of the selected user.
+- **Explanation:** This page fetches all users from the database and displays them in a table. Each row in the table has a "View" link that takes the user to a detailed view of the selected user. There is also functionality to allow the users to search for users in the database based on their email address.
 
 #### User Page
 
@@ -503,7 +530,7 @@ $product = new Product($row['id'], $row['name'], $row['price'], $row['descriptio
 
 - **Explanation:** This page fetches and displays the details of a specific product.
 
-### Conclusion
+## Conclusion
 
 Congratulations! You've created a simple PHP application that interacts with a PostgreSQL database. This application allows you to view users, their orders, and the products in those orders.
 
